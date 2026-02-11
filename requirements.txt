@@ -6,3 +6,4 @@ azure-storage-blob
 python-dotenv
 gradio
 openai
+azure-cognitiveservices-vision-customvision
