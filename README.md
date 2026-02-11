@@ -33,6 +33,7 @@ https://huggingface.co/spaces/CharSiu8/BatVision
 - Gradio (UI)
 - HuggingFace Spaces (deployment)
 - OpenAI API 
+- Docker Containerizes the application for cloud deployment.
 
 ## Data Structure
 ```
