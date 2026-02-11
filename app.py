@@ -1,3 +1,4 @@
+from unittest import result
 import gradio as gr
 import requests
 import os
@@ -17,6 +18,8 @@ print(f"Key length: {len(os.getenv('CUSTOM_VISION_KEY', ''))}")
 CUSTOM_VISION_ENDPOINT = os.getenv("CUSTOM_VISION_ENDPOINT")
 CUSTOM_VISION_KEY = os.getenv("CUSTOM_VISION_KEY")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+CUSTOM_VISION_PROJECT_ID = os.getenv("CUSTOM_VISION_PROJECT_ID")
+iteration_name = os.getenv("CUSTOM_VISION_PUBLISHED_NAME")
 client = OpenAI(api_key=OPENAI_API_KEY)
 
 if not CUSTOM_VISION_ENDPOINT:
@@ -111,12 +114,21 @@ def predict(image):
         "Prediction-Key": CUSTOM_VISION_KEY,
         "Content-Type": "application/octet-stream"
     }
-    response = requests.post(CUSTOM_VISION_ENDPOINT, headers=headers, data=image_bytes)
+    prediction_url = f"{CUSTOM_VISION_ENDPOINT}/customvision/v3.0/Prediction/{CUSTOM_VISION_PROJECT_ID}/classify/iterations/{iteration_name}/image"
+    print("DEBUG - Full URL:", prediction_url)
+    print("DEBUG - iteration_name:", iteration_name)
+    response = requests.post(prediction_url, headers=headers, data=image_bytes)
     
     # parse response
     result = response.json()
     print(result)
-    predictions = result["predictions"]
+    print("DEBUG - API Response:", result)
+    print("DEBUG - Endpoint:", CUSTOM_VISION_ENDPOINT)
+    print("DEBUG - Project ID:", CUSTOM_VISION_PROJECT_ID)
+    print("DEBUG - API Response:", result)
+    predictions = result.get("predictions", [])
+    if not predictions:
+        return "Error: No predictions returned. Check Custom Vision model."
     top = max(predictions, key=lambda x: x["probability"])
     
     # return top prediction + confidence
