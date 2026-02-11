@@ -1,5 +1,5 @@
 # BatVisionFoundry
-BatVision Deployd on Foundry
+BatVision Deployed on Foundry
 # BatVision
 
 AI-powered image classifier that identifies Batman actors (Affleck, Bale, Pattinson) and distinguishes from similar masked characters (Nite Owl, Darkwing). Built with Azure cloud services.
